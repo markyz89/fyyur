@@ -124,7 +124,10 @@ def show_venue(venue_id):
   current_time = datetime.utcnow()
 
   #number of shows 
-  shows_query = Show.query.filter(venue_id == venue_id).all()
+  # shows_query = Show.query.filter(venue_id == venue_id).all()
+
+  shows_query = db.session.query(Show).join(Venue).filter(Show.venue_id == venue_id).all()
+
   upcoming_shows = []
   past_shows = []
 
@@ -277,7 +280,10 @@ def show_artist(artist_id):
   current_time = datetime.utcnow()
 
   #number of shows 
-  shows_query = Show.query.filter(artist_id == artist_id).all()
+  # shows_query = Show.query.filter(artist_id == artist_id).all()
+
+  shows_query = db.session.query(Show).join(Artist).filter(Show.artist_id == artist_id).all()
+
   upcoming_shows = []
   past_shows = []
 

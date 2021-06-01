@@ -1,20 +1,15 @@
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField, ValidationError
-import phonenumbers
 from wtforms.validators import DataRequired, AnyOf, URL
+import re
 
 def phone_validation(form, field):
-        if len(field.data) > 16 and len(field.data) < 6 :
-            raise ValidationError('Phone number is not valid.')
-        try:
-            number = phonenumbers.parse(field.data)
-            if not (phonenumbers.is_valid_number(number)):
-                raise ValidationError('Phone number is not valid.')
-        except:
-            number = phonenumbers.parse("+1"+field.data)
-            if not (phonenumbers.is_valid_number(number)):
-                raise ValidationError('Phone number is not valid.')
+    regex = re.compile('(\d{3})\D*(\d{3})\D*(\d{4})')
+    number = regex.match(field.data)
+    if not (number):
+        raise ValidationError('Phone number is not valid.')
+
 
 class ShowForm(Form):
     artist_id = StringField(
